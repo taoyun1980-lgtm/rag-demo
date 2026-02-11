@@ -34,11 +34,15 @@ export function Step8Generate() {
       .map((result, index) => `[文档 ${index + 1}]:\n${result.chunk.text}`)
       .join('\n\n');
 
+    // 使用局部变量累积答案
+    let accumulatedAnswer = '';
+
     await generateStream({
       context,
       query: currentQuery,
       onToken: (token) => {
-        setGeneratedAnswer((prev) => prev + token);
+        accumulatedAnswer += token;
+        setGeneratedAnswer(accumulatedAnswer);
       },
       onDone: () => {
         setGenerating(false);
@@ -49,7 +53,7 @@ export function Step8Generate() {
           id: Date.now().toString(),
           query: currentQuery,
           timestamp: Date.now(),
-          answer: generatedAnswer,
+          answer: accumulatedAnswer,
           retrievedChunks,
         });
       },
