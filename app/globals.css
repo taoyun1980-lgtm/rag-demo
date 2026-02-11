@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fefcf9;
+  --foreground: #1a1816;
+  --card: #ffffff;
+  --card-foreground: #1a1816;
+  --border: #e5d5c8;
+  --primary: #d97757;
+  --primary-foreground: #ffffff;
+  --secondary: #f3e8df;
+  --secondary-foreground: #1a1816;
+  --muted: #f8f3ee;
+  --muted-foreground: #6b635c;
+  --accent: #ffa07a;
+  --accent-foreground: #1a1816;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
