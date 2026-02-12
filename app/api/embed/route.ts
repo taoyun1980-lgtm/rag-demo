@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: corsHeaders });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { texts } = await req.json();
@@ -7,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (!texts || !Array.isArray(texts) || texts.length === 0) {
       return NextResponse.json(
         { error: '请提供有效的文本数组' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -18,7 +28,7 @@ export async function POST(req: NextRequest) {
     if (!apiKey) {
       return NextResponse.json(
         { error: 'API Key 未配置' },
-        { status: 500 }
+        { status: 500, headers: corsHeaders }
       );
     }
 
@@ -46,7 +56,7 @@ export async function POST(req: NextRequest) {
         console.error('Qwen API 错误:', errorText);
         return NextResponse.json(
           { error: `Qwen API 错误: ${response.status}` },
-          { status: response.status }
+          { status: response.status, headers: corsHeaders }
         );
       }
 
@@ -61,12 +71,12 @@ export async function POST(req: NextRequest) {
       embeddings,
       model,
       dimension: embeddings[0]?.length || 0,
-    });
+    }, { headers: corsHeaders });
   } catch (error) {
     console.error('Embedding 错误:', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : '未知错误' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }

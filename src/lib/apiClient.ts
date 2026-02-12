@@ -1,7 +1,17 @@
 // API 调用封装
 
+// GitHub Pages 静态部署时，API 请求走 Cloudflare 隧道后端
+// 本地开发时走同源 Next.js API routes
+const TUNNEL_URL = 'https://partition-counters-speeds-suggests.trycloudflare.com';
+
+function getApiBase(): string {
+  if (typeof window === 'undefined') return '';
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  return isLocal ? '' : TUNNEL_URL;
+}
+
 export async function embedTexts(texts: string[]): Promise<number[][]> {
-  const response = await fetch('/api/embed', {
+  const response = await fetch(`${getApiBase()}/api/embed`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +40,7 @@ export async function generateStream(options: GenerateStreamOptions) {
   const { context, query, onToken, onDone, onError } = options;
 
   try {
-    const response = await fetch('/api/generate', {
+    const response = await fetch(`${getApiBase()}/api/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
